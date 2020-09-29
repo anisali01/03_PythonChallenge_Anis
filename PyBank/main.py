@@ -3,10 +3,10 @@
 import csv
 import os
 
-#Locate the CSV File
+#Locate the CSV file
 csvpath = os.path.join('Resources', 'budget_data.csv')
 
-#set totalAmount variable
+#Set variables
 months = []
 amounts = []
 change = []
@@ -14,17 +14,17 @@ changeMonth = []
 
 count = 0
 
-#open and read csv
+#Read CSV
 with open(csvpath) as csvfile:
     csvreader = csv.reader(csvfile, delimiter=",")
 
-    #skip the header row
+    #Skip header
     csv_header = next(csvfile)
 
-    #read through each row of data after the header
+    #Read file
     for row in csv.reader(csvfile):
 
-        #first time through set the newAmount for calculation
+        #First time through set the newAmount for calculation
         if count == 0:
             #add 1 for first pass only
             count = count + 1
@@ -49,17 +49,28 @@ with open(csvpath) as csvfile:
     #calculate results based on for loop entries
     totalMonths = len(months)
     totalAmount = sum(amounts)
-    averageChange = round(sum(change) / len(changeMonth), 2)
+    averageChange = (sum(change) / len(changeMonth))
     maxChange = max(change)
     maxChangeMonthIndex = change.index(maxChange)
     minChange = min(change)
     minChangeMonthIndex = change.index(minChange)
 
-#print the results
+#Terminal Results
 print('Financial Analysis')
 print('----------------------------')
 print(f'Total Months: {totalMonths}')
-print(f'Total: {totalAmount}')
-print(f'Average Change: {averageChange}')
-print(f'Greatest Increase in Profits: {changeMonth[int(maxChangeMonthIndex)]} ({maxChange})')
-print(f'Greatest Decrease in Profits: {changeMonth[int(minChangeMonthIndex)]} ({minChange})')
+print(f'Total: $ {totalAmount}')
+print(f'Average Change: $ {averageChange}')
+print(f'Greatest Increase in Profits: {changeMonth[int(maxChangeMonthIndex)]} ($ {maxChange})')
+print(f'Greatest Decrease in Profits: {changeMonth[int(minChangeMonthIndex)]} ($ {minChange})')
+
+#Text Results
+output_path = os.path.join("Analysis", "Financial Analysis.txt")
+with open(output_path, "w", newline='') as datafile:
+    print('Financial Analysis\n'
+    '----------------------------\n'
+    f'Total Months: {totalMonths}\n'
+    f'Total: {totalAmount}\n'
+    f'Average Change: {averageChange}\n'
+    f'Greatest Increase in Profits: {changeMonth[int(maxChangeMonthIndex)]} ({maxChange})\n'
+    f'Greatest Decrease in Profits: {changeMonth[int(minChangeMonthIndex)]} ({minChange})', file=datafile)
